@@ -1,7 +1,7 @@
 import fastapi
 import starlette.responses
 
-from . import parser
+from . import dbf
 
 router = fastapi.APIRouter(default_response_class=starlette.responses.UJSONResponse)
-router.include_router(parser.router, prefix="/parser")
+router.include_router(dbf.router, tags=["DBF"], prefix="/dbf")
