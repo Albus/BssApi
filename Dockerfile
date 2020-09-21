@@ -2,6 +2,7 @@ FROM python:3.8-buster
 
 ENV TZ=Europe/Moscow \
     POETRY_NO_INTERACTION=1 \
+    POETRY_NO_DEV=1 \
     PYTHONPATH=${PYTHONPATH}:/app \
     WEB_CONCURRENCY=4 \
     FORWARDED_ALLOW_IPS=*
@@ -17,8 +18,8 @@ RUN pip install --no-cache-dir --quiet --upgrade pip poetry \
 WORKDIR /app
 COPY ./bssapi /app/bssapi
 COPY ./pyproject.toml /app/
-RUN poetry update --no-dev --quiet \
-    && poetry install --no-dev --quiet\
+RUN poetry update \
+    && poetry install \
     && poetry completions bash > /etc/bash_completion.d/poetry.bash-completion
 
 
