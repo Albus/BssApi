@@ -17,7 +17,7 @@ import bssapi.core.json
 
 class Source(pydantic.BaseModel):
     """
-    Адрес службы доступа к файлам. Объект участвуе в формировании подписи источника данных (hash/source).
+    Адрес службы доступа к файлам. Объект участвует в формировании подписи источника данных (hash/source).
     """
     user: typing.Optional[pydantic.StrictStr] = pydantic.Field(
         title="Логин",
@@ -67,7 +67,7 @@ class Hash(pydantic.BaseModel):
         title="Идентификатор формата файла DBF",
         description="Высчитывается из набора колонок файла DBF (columns). "
                     "Выражает тип DBF в независимости от источника получения файла. "
-                    "Может случить идентификатором набора колонок, их типов и порядка их расположения.",
+                    "Может случить идентификатором набора колонок и их типов.",
         example="da58e0c8b7a42981282358c43c15b1d7004deaf4")
     source: typing.Optional[pydantic.StrictStr] = pydantic.Field(
         exclusiveRegex="^[0-9a-fA-F]{40}$",
