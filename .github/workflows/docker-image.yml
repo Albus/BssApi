@@ -15,3 +15,5 @@ jobs:
       with:
         image: docker-hub-repo/image-name
         registry: docker.io
+        username: ${{ secrets.DOCKERHUB_USERNAME }}
+        password: ${{ secrets.DOCKERHUB_TOKEN }}
