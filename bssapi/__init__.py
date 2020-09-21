@@ -38,4 +38,5 @@ async def request_validation_exception_handler(request: Request, exc: RequestVal
 
 api.add_exception_handler(RequestValidationError, request_validation_exception_handler)
 
-app = uvicorn.Server(uvicorn.Config(app=r'bssapi:api', debug=api.debug, limit_max_requests=100, host="0.0.0.0")).run
+app = uvicorn.Server(
+    uvicorn.Config(app='bssapi:api', debug=api.debug, limit_max_requests=100, host="0.0.0.0", use_colors=True)).run
