@@ -2,7 +2,9 @@ FROM python:3.8-buster
 
 ENV TZ=Europe/Moscow \
     POETRY_NO_INTERACTION=1 \
-    PYTHONPATH=${PYTHONPATH}:/app
+    PYTHONPATH=${PYTHONPATH}:/app \
+    WEB_CONCURRENCY=4 \
+    FORWARDED_ALLOW_IPS=*
 
 RUN pip install --no-cache-dir --quiet --upgrade pip poetry \
     && poetry config virtualenvs.create true \
@@ -10,13 +12,13 @@ RUN pip install --no-cache-dir --quiet --upgrade pip poetry \
     && poetry config --unset virtualenvs.in-project \
     && poetry config --unset virtualenvs.path \
     && poetry config cache-dir "/tmp/poetry/cache" \
-    && rm /etc/apt/apt.conf.d/docker-clean \
-    && apt-get -yqq update && apt-get -yqq install mc bash-completion
+    && apt-get -yqq update && apt-get -yqq install mc htop
 
 WORKDIR /app
 COPY ./bssapi /app/bssapi
 COPY ./pyproject.toml /app/
-RUN poetry install --no-dev \
+RUN poetry update --no-dev --quiet \
+    && poetry install --no-dev --quiet\
     && poetry completions bash > /etc/bash_completion.d/poetry.bash-completion
 
 
