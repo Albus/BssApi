@@ -10,6 +10,7 @@ RUN pip install --no-cache-dir --quiet --upgrade pip poetry \
     && poetry config --unset virtualenvs.in-project \
     && poetry config --unset virtualenvs.path \
     && poetry config cache-dir "/tmp/poetry/cache" \
+    && rm /etc/apt/apt.conf.d/docker-clean \
     && apt-get -yqq update && apt-get -yqq install mc bash-completion
 
 WORKDIR /app
