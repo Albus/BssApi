@@ -1,3 +1,5 @@
-!/bssapi
-!/Dockerfile
-!/pyproject.toml
+.*
+*.egg-info
+dist
+*.lock
+*.rst
