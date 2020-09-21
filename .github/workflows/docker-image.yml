@@ -12,11 +12,11 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build the Docker image
-      run: docker build . --file Dockerfile --tag bssapi
+      run: docker build . --file Dockerfile --tag albus/bssapi
     - uses: mr-smithers-excellent/docker-build-push@v4
       with:
-        image: bssapi
-        tag: albus/bssapi:latest 
+        image: albus/bssapi
+        tag: latest 
         registry: docker.io
         username: ${{ secrets.DOCKERHUB_USERNAME }}
         password: ${{ secrets.DOCKERHUB_TOKEN }}
