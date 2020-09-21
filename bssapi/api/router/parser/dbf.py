@@ -1,18 +1,21 @@
-import pathlib
 
-import dbfread
-import fastapi
-import pydantic
-import starlette.responses
-import typing
+__all__ = ['router']
+
+from pathlib import PurePosixPath
+
+from dbfread import DBF
+from fastapi import UploadFile, Query, APIRouter, File
+from pydantic import AnyUrl, StrictStr
+
 from fastapi.exceptions import RequestValidationError
+from starlette.requests import Request
 from pydantic.error_wrappers import ErrorWrapper
-import starlette.requests
+from starlette.responses import UJSONResponse
 
 import bssapi.core.dbf
 import bssapi.schemas.Exch
 
-router = fastapi.APIRouter(default_response_class=starlette.responses.UJSONResponse)
+router = APIRouter(default_response_class=UJSONResponse)
 
 _descr_source = """
     Путь к папке с файлом без названия самого файла.
@@ -26,15 +29,15 @@ _descr_source = """
              description="Препарирует переданный файл DBF. Выдает описание его формата.",
              response_description="Файл обработан без ошибок")
 async def parse_format(
-        url: pydantic.AnyUrl = fastapi.Query(
+        url: AnyUrl = Query(
             default=None, title="URI источника данных",
             description=_descr_source),
-        file: fastapi.UploadFile = fastapi.File(
+        file: UploadFile = File(
             default=..., title="Файл DBF", description="Файл формата dBase(3/4)"),
-        request: starlette.requests.Request = None):
+        request: Request = None):
     if file.content_type == 'application/octet-stream':
 
-        ext = pathlib.PurePosixPath(file.filename).suffix.lower()
+        ext = PurePosixPath(file.filename).suffix.lower()
 
         await file.seek(0)
         dbf_bytes = await file.read()
@@ -48,10 +51,10 @@ async def parse_format(
             except BaseException as exc:
                 raise RequestValidationError(
                     errors=[ErrorWrapper(
-                        exc=ValueError('Не могу открыть файл.', pydantic.StrictStr(exc)), loc=("body", "file"))],
+                        exc=ValueError('Не могу открыть файл.', StrictStr(exc)), loc=("body", "file"))],
                     body={"file": file.filename})
             else:
-                if isinstance(dbf, dbfread.DBF):
+                if isinstance(dbf, DBF):
                     format_packet = bssapi.schemas.Exch.build_format(url=url, fields=dbf.fields)
                     dbf.unload()
                     return format_packet
@@ -79,10 +82,10 @@ async def parse_format(
              description="Препарирует переданный файл DBF. Выдает описание источника данных.",
              response_description="Файл обработан без ошибок")
 async def parse_source(
-        url: pydantic.AnyUrl = fastapi.Query(
+        url: AnyUrl = Query(
             default=None, title="URI источника данных",
             description=_descr_source),
-        file: fastapi.UploadFile = fastapi.File(
+        file: UploadFile = File(
             default=..., title="Файл DBF", description="Файл формата dBase(3/4)")):
     format_packet = await parse_format(url=url, file=file)
 

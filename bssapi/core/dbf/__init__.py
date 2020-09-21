@@ -6,6 +6,9 @@ import typing
 import chardet
 import dbfread
 import pydantic
+from fastapi.exceptions import RequestValidationError
+from pydantic import StrictStr
+from pydantic.error_wrappers import ErrorWrapper
 
 
 class RecFactory(collections.OrderedDict):
@@ -30,5 +33,5 @@ async def get_dbf(file: pydantic.StrBytes) -> dbfread.DBF:
                            ignore_missing_memofile=False,
                            char_decode_errors='strict', encoding=encoding)
     else:
-        pass  # TODO: обработать ошибку определения кодировки DBF
+        raise UnicodeEncodeError('Не могу определить кодировку')
 

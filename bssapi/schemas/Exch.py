@@ -45,7 +45,7 @@ class ColumnDescription(pydantic.BaseModel):
     Описание формата поля файла DBF
     """
     type: typing.Literal['C', 'N', 'D'] = pydantic.Field(
-        example="C", title="Формат поля DBF",
+        example="N", title="Формат поля DBF",
         description="C(строка), N(число) D(дата)")
     length: pydantic.StrictInt = pydantic.Field(
         example=19,
