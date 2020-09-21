@@ -15,8 +15,8 @@ RUN pip install --no-cache-dir --quiet --upgrade pip poetry \
 WORKDIR /app
 COPY ./bssapi /app/bssapi
 COPY ./pyproject.toml /app/
-RUN poetry install --no-dev &&
-    poetry completions bash > /etc/bash_completion.d/poetry.bash-completion
+RUN poetry install --no-dev \
+    && poetry completions bash > /etc/bash_completion.d/poetry.bash-completion
 
 
 STOPSIGNAL SIGINT
