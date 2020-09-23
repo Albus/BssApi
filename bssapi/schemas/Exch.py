@@ -10,6 +10,7 @@ from _hashlib import HASH
 import dbfread
 import fastapi
 import pydantic
+import std_hash
 
 import bssapi.core.dbf
 import bssapi.core.json
@@ -126,15 +127,15 @@ class Packet(Hash, pydantic.BaseModel):
     file: File
 
 
-def get_hash(*values) -> pydantic.StrBytes:
-    return hashlib.sha1(repr(values).encode()).digest()
+async def get_hash(*values) -> pydantic.StrictStr:
+    return std_hash.hash(values).hex()
 
 
-def build_hash(url: Source, columns: typing.OrderedDict[pydantic.StrictStr, ColumnDescription]) -> Hash:
-    format_hash = pydantic.StrictStr(get_hash(columns).hex())
+async def build_hash(url: Source, columns: typing.OrderedDict[pydantic.StrictStr, ColumnDescription]) -> Hash:
+    format_hash = pydantic.StrictStr(await get_hash(columns))
     return Hash(
         format=format_hash,
-        source=get_hash(url, format_hash).hex() if url and columns else None)
+        source=await get_hash(url, format_hash) if url and columns else None)
 
 
 def build_source(url: pydantic.AnyUrl) -> Source:
@@ -144,14 +145,14 @@ def build_source(url: pydantic.AnyUrl) -> Source:
                   path=pathlib.PurePosixPath(url.path).as_posix() if url.path else None)
 
 
-def build_format(url: typing.Optional[pydantic.AnyUrl], fields: typing.List) -> FormatPacket:
+async def build_format(url: typing.Optional[pydantic.AnyUrl], fields: typing.List) -> FormatPacket:
     _url = build_source(url) if url else None
     _columns = collections.OrderedDict(
         sorted({f.name: ColumnDescription(type=f.type, length=f.length or None,
                                           decimal_count=f.decimal_count or None)
                 for f in fields}.items())) if fields else None
 
-    return FormatPacket(columns=_columns, url=_url, hash=build_hash(url=_url, columns=_columns))
+    return FormatPacket(columns=_columns, url=_url, hash=await build_hash(url=_url, columns=_columns))
 
 
 def build_packet(format_packet: FormatPacket, dbf: dbfread.DBF,

@@ -12,6 +12,7 @@ from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 
 from .api.router import router
 
+
 api = fastapi.FastAPI(debug=False, version=__version__,
                       middleware=[
                           fastapi.middleware.Middleware(fastapi.middleware.gzip.GZipMiddleware, minimum_size=100)],

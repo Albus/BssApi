@@ -11,6 +11,10 @@ dbfread = {git = "https://github.com/rysson/dbfread.git", rev = "master"}
 orjson = "^3.3.1"
 unicorn = "^1.0.1"
 attr = "^0.3.1"
+python-multipart = "^0.0.5"
+aioftp = "^0.18.0"
+lz4 = "^3.1.0"
+std-hash = "^0.1.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"
