@@ -14,7 +14,8 @@ from starlette.requests import Request
 import starlette.responses
 
 import bssapi.core.dbf
-import bssapi.schemas.Exch
+import bssapi.schemas.exch
+import bssapi_schemas.exch
 from bssapi.schemas.http.headers import ContentType
 
 router = APIRouter(default_response_class=starlette.responses.UJSONResponse)
@@ -47,7 +48,7 @@ async def unpack(content_type: ContentType, value: UploadFile, dont_close_after_
     return _value
 
 
-@router.post('/format', response_model=bssapi.schemas.Exch.FormatPacket,
+@router.post('/format', response_model=bssapi_schemas.exch.FormatPacket,
              summary='Описание формата файла DBF',
              description="Препарирует переданный файл DBF. Выдает описание его формата.",
              response_description="Файл обработан без ошибок")
@@ -75,7 +76,7 @@ async def parse_format(
                     body={"file": file.filename})
             else:
                 if isinstance(dbf, DBF):
-                    format_packet = await bssapi.schemas.Exch.build_format(url=url, fields=dbf.fields)
+                    format_packet = await bssapi.schemas.exch.build_format(url=url, fields=dbf.fields)
                     dbf.unload()
                     return format_packet
                 else:
@@ -99,12 +100,11 @@ async def parse_format(
             body={"Сontent-type": file.content_type})
 
 
-@router.post('/source', response_model=bssapi.schemas.Exch.Packet,
+@router.post('/source', response_model=bssapi_schemas.exch.Packet,
              summary='Схема источника данных файла DBF',
              description="Препарирует переданный файл DBF. Выдает описание источника данных.",
              response_description="Файл обработан без ошибок")
-async def parse_source(request: Request,
-                       url: AnyUrl = Query(
+async def parse_source(url: AnyUrl = Query(
                            default=None, title="URI источника данных",
                            description=_descr_source),
                        file: UploadFile = File(
@@ -115,7 +115,7 @@ async def parse_source(request: Request,
                              content_type=await ContentType.from_str(StrictStr(file.content_type)))
 
     dbf = await bssapi.core.dbf.get_dbf(dbf_bytes)
-    source_packet = bssapi.schemas.Exch.build_packet(format_packet=format_packet, dbf=dbf,
+    source_packet = bssapi.schemas.exch.build_packet(format_packet=format_packet, dbf=dbf,
                                                      dbf_bytes=dbf_bytes, file=file)
     dbf.unload()
 

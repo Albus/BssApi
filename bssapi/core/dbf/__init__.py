@@ -2,13 +2,9 @@ import collections
 import datetime
 import io
 import typing
-
 import chardet
 import dbfread
 import pydantic
-from fastapi.exceptions import RequestValidationError
-from pydantic import StrictStr
-from pydantic.error_wrappers import ErrorWrapper
 
 
 class RecFactory(collections.OrderedDict):
