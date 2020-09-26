@@ -4,7 +4,7 @@ import pathlib
 import typing
 
 import bssapi_schemas.exch
-import dbfread
+import bssapi_dbfread as dbfread
 import fastapi
 import pydantic
 import std_hash

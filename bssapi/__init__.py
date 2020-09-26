@@ -5,13 +5,13 @@ import uvicorn
 import fastapi.middleware
 import fastapi.middleware.gzip
 from fastapi.encoders import jsonable_encoder
-from fastapi.exceptions import RequestValidationError
+from fastapi.exceptions import RequestValidationError, HTTPException
+from pydantic import ValidationError
 from starlette.requests import Request
 from starlette.responses import JSONResponse, UJSONResponse
 from starlette.status import HTTP_422_UNPROCESSABLE_ENTITY
 
 from .api.router import router
-
 
 api = fastapi.FastAPI(debug=False, version=__version__,
                       middleware=[
@@ -37,7 +37,22 @@ async def request_validation_exception_handler(request: Request, exc: RequestVal
                         })
 
 
+async def validation_exception_handler(request: Request, exc: ValidationError) -> JSONResponse:
+    return JSONResponse(status_code=HTTP_422_UNPROCESSABLE_ENTITY,
+                        content={
+                            "detail": jsonable_encoder(exc.errors()),
+                            "body": jsonable_encoder(exc.body) if exc.body else None
+                        })
+
+
+async def type_error_exception_handler(request: Request, exc: TypeError) -> JSONResponse:
+    return JSONResponse(status_code=HTTP_422_UNPROCESSABLE_ENTITY,
+                        content={"detail": str(exc)})
+
+
 api.add_exception_handler(RequestValidationError, request_validation_exception_handler)
+api.add_exception_handler(ValidationError, validation_exception_handler)
+api.add_exception_handler(TypeError, type_error_exception_handler)
 
 app = uvicorn.Server(
     uvicorn.Config(app='bssapi:api', debug=api.debug, limit_max_requests=10000,

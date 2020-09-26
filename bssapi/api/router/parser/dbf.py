@@ -4,7 +4,7 @@ import typing
 from pathlib import PurePosixPath
 
 import lz4.block
-from dbfread import DBF
+from bssapi_dbfread import DBF
 from fastapi import UploadFile, Query, APIRouter, File
 from fastapi.exceptions import RequestValidationError
 import multipart.multipart
@@ -68,7 +68,7 @@ async def parse_format(
         if ext in ['.dbf']:
             dbf = None
             try:
-                dbf = await bssapi.core.dbf.get_dbf(dbf_bytes)
+                dbf = await bssapi.core.dbf.get_dbf(dbf_bytes) if len(dbf_bytes) else None
             except BaseException as exc:
                 raise RequestValidationError(
                     errors=[pydantic.error_wrappers.ErrorWrapper(

@@ -3,7 +3,7 @@ import datetime
 import io
 import typing
 import chardet
-import dbfread
+import bssapi_dbfread as dbfread
 import pydantic
 
 
