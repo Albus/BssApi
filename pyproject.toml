@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "BssAPI"
-version = "0.1.2"
+version = "0.1.3"
 description = "Функционал перефирийного взаимодействия корпоративной учетной системы BSS"
 authors = ["Anton Rastyazhenko <rastyazhenko.anton@gmail.com>"]
 
@@ -13,9 +13,10 @@ python-multipart = "^0.0.5"
 aioftp = "^0.18.0"
 lz4 = "^3.1.0"
 std-hash = "^0.1.0"
-bssapi-schemas = "^0.1.0"
+bssapi-schemas = "^0.1.7"
 pytest-asyncio = "^0.14.0"
 bssapi-dbfread = "^0.1.0"
+pydantic = "^1.6.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "^5.2"

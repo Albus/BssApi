@@ -87,7 +87,7 @@ description = "Схемы BSS"
 name = "bssapi-schemas"
 optional = false
 python-versions = ">=3.8,<4.0"
-version = "0.1.6"
+version = "0.1.7"
 
 [package.dependencies]
 pydantic = ">=1.6.1,<2.0.0"
@@ -610,7 +610,7 @@ python-versions = ">=3.6.1"
 version = "8.1"
 
 [metadata]
-content-hash = "6e967ee58f2f12696f12d217752bc7f2c435fb1efbe48472fbb445453b4c90f6"
+content-hash = "fbcc76064f6981a098c9fbba4a33b66b38e83d9ae0ae5a2f522338bda2e212bd"
 lock-version = "1.0"
 python-versions = "^3.8"
 
@@ -652,8 +652,8 @@ bssapi-dbfread = [
     {file = "BssApi_DbfRead-0.1.0-py3-none-any.whl", hash = "sha256:d6e720b6fddc79cf185071c0e471b60c69206ee17296985056036ff4a31b535d"},
 ]
 bssapi-schemas = [
-    {file = "bssapi-schemas-0.1.6.tar.gz", hash = "sha256:b7d4116ca85c5d715a5cc482b3704668bea4a505e99f8b96f12757e6485566ce"},
-    {file = "bssapi_schemas-0.1.6-py3-none-any.whl", hash = "sha256:cd80fe351c2787da09cdd07aa8e72e72e0494992acbb4745bedb5a2444283bda"},
+    {file = "bssapi-schemas-0.1.7.tar.gz", hash = "sha256:491ab81ac28e65277f669faecf4d73f1acf03fd0dd5030f0f6c55af5c7644596"},
+    {file = "bssapi_schemas-0.1.7-py3-none-any.whl", hash = "sha256:26a872229ec528c11436af226426771988ea9ed768c2e6a15253568531acb424"},
 ]
 certifi = [
     {file = "certifi-2020.6.20-py2.py3-none-any.whl", hash = "sha256:8fc0819f1f30ba15bdb34cceffb9ef04d99f420f68eb75d901e9560b8749fc41"},
